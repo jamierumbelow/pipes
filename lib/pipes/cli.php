@@ -87,18 +87,26 @@ class Pipes_Cli {
 	
 	/**
 	 * Write a string to STDOUT, potentially in a colour
+	 * and potentially indented
 	 *
 	 * @param string $string The string to write
 	 * @param string $colour The colour name in self::$colours
+	 * @param integer $indent The indent level
 	 * @return void
 	 * @author Jamie Rumbelow
 	 */
-	public function write($string, $colour = FALSE) {
+	public function write($string, $colour = FALSE, $indent = 0) {
+		$output = '';
+		
+		if ($indent) {
+			$output .= str_repeat("  ", $indent);
+		}
+		
 		if ($colour) {
-			$output = "\033[" . self::$colours[$colour] . "m";
+			$output .= "\033[" . self::$colours[$colour] . "m";
 			$output .= $string . "\033[0m";
 		} else {
-			$output = $string;
+			$output .= $string;
 		}
 		
 		fwrite(STDOUT, $output.PHP_EOL);
