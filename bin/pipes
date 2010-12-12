@@ -12,6 +12,9 @@
  * @license MIT License
  **/
 
+// Define a few quick constants
+define('PIPES_CMD_FILENAME', substr(__FILE__, strlen(dirname(__FILE__) . "/")));
+
 // Load Pipes
 require_once 'pipes/pipes.php';
 

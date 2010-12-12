@@ -11,4 +11,11 @@
  * @license MIT License
  **/
 
-class Pipes { }
+require_once 'pipes/cli.php';
+require_once 'pipes/downloader.php';
+require_once 'pipes/package.php';
+require_once 'pipes/vcs.php';
+
+class Pipes {
+	static $commands = array();
+}
