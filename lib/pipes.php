@@ -16,6 +16,8 @@ require_once 'pipes/downloader.php';
 require_once 'pipes/package.php';
 require_once 'pipes/vcs.php';
 
+define('PIPES_VERSION', '1.0.0-dev');
+
 class Pipes {
 	static $commands = array('install', 'uninstall', 'update', 'list', 'search', 'sources', 'build', 'help');
 	public $cli;
