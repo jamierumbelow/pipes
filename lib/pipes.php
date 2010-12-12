@@ -47,7 +47,11 @@ class Pipes {
 		$object = new $class($cli);
 		
 		// Run run run
-		$object->help();
+		if (method_exists($object, 'help')) {
+			$object->help();
+		} else {
+			$cli->error("No help docs for command '$command'");
+		}
 	}
 	
 	/**
