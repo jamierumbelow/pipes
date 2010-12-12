@@ -17,6 +17,7 @@ require_once 'pipes/package.php';
 require_once 'pipes/vcs.php';
 
 define('PIPES_VERSION', '1.0.0-dev');
+define('PIPES_DIR', dirname(__FILE__) . '/');
 
 class Pipes {
 	static $commands = array('install', 'uninstall', 'update', 'list', 'search', 'sources', 'build', 'help');
@@ -44,24 +45,29 @@ class Pipes {
 	 * @author Jamie Rumbelow
 	 */
 	public function command($command = 'help', $args = array(), $flags = array()) {
-		// Load the command file
-		if (file_exists('pipes/commands/'.$command.'.php')) {
-			require 'pipes/commands/'.$command.'.php';
-		} else {
-			// Default to help, but show an error
-			$this->cli->error("Unknown command '$command'");
-			$this->command('help');
-			exit;
-		}
-		
 		// Version flag?
-		if (in_array('-version', $flags)) {
+		if (isset($flags["-version"])) {
 			$this->command('version');
 			exit;
 		}
 		
 		// Help flag?
-		if (in_array('-help', $flags)) {
+		if (isset($flags["-help"])) {
+			$this->command('help');
+			exit;
+		}
+		
+		// Load the command file
+		if ($command) {
+			if (file_exists(PIPES_DIR . 'pipes/commands/'.$command.'.php')) {
+				require PIPES_DIR . 'pipes/commands/'.$command.'.php';
+			} else {
+				// Default to help, but show an error
+				$this->cli->error("Unknown command '$command'");
+				$this->command('help');
+				exit;
+			}
+		} else {
 			$this->command('help');
 			exit;
 		}
