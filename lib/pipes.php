@@ -24,6 +24,33 @@ class Pipes {
 	public $cli;
 	
 	/**
+	 * Output a command's help message
+	 *
+	 * @param object $cli Pipes_Cli object
+	 * @param string $command Command name
+	 * @return void
+	 * @author Jamie Rumbelow
+	 */
+	static public function command_help($cli, $command) {
+		// Load the command file
+		if (file_exists(PIPES_DIR . 'pipes/commands/'.$command.'.php')) {
+			require_once PIPES_DIR . 'pipes/commands/'.$command.'.php';
+		} else {
+			// Default to help, but show an error
+			$cli->error("Unknown command '$command'");
+			static::command_help($cli, 'help');
+			exit;
+		}
+		
+		// Okay, instanciate the new command class
+		$class = "Pipes_Command_".ucwords($command);
+		$object = new $class($cli);
+		
+		// Run run run
+		$object->help();
+	}
+	
+	/**
 	 * Load and execute the command
 	 *
 	 * @param Pipes_Cli $cli the ready Pipes_Cli object
@@ -60,7 +87,7 @@ class Pipes {
 		// Load the command file
 		if ($command) {
 			if (file_exists(PIPES_DIR . 'pipes/commands/'.$command.'.php')) {
-				require PIPES_DIR . 'pipes/commands/'.$command.'.php';
+				require_once PIPES_DIR . 'pipes/commands/'.$command.'.php';
 			} else {
 				// Default to help, but show an error
 				$this->cli->error("Unknown command '$command'");
