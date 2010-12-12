@@ -11,3 +11,10 @@
  * @copyright Copyright (c) 2010 Jamie Rumbelow
  * @license MIT License
  **/
+
+// Load Pipes
+require_once 'pipes/pipes.php';
+
+// Parse the command line input and go
+$cli = new Pipes_Cli($argv);
+$pipes = new Pipes($cli);
