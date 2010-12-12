@@ -26,6 +26,31 @@ class Pipes_Cli {
 	protected $raw_argv = array();
 	
 	/**
+	 * Nicked this from Fuel, thanks guys!
+	 * http://fuelphp.com
+	 *
+	 * @author Dan Horrigan
+	 */
+	protected static $colours = array(
+		'black'			=> '0;30',
+		'gray'			=> '1;30',
+		'blue'			=> '0;34',
+		'light_blue'	=> '1;34',
+		'green'			=> '0;32',
+		'light_green'	=> '1;32',
+		'cyan'			=> '0;36',
+		'light_cyan'	=> '1;36',
+		'red'			=> '0;31',
+		'light_red'		=> '1;31',
+		'purple'		=> '0;35',
+		'light_purple'	=> '1;35',
+		'brown'			=> '0;33',
+		'yellow'		=> '1;33',
+		'light_gray'	=> '0;37',
+		'white'			=> '1;37',
+	);
+	
+	/**
 	 * Creates the class and parses arguments
 	 *
 	 * @param array $args Array of argv arguments
@@ -36,6 +61,57 @@ class Pipes_Cli {
 			$this->parse_arguments($args);
 			$this->raw_argv = $args;
 		}
+	}
+	
+	/**
+	 * Output a successful message
+	 *
+	 * @param string $string The string to output
+	 * @return void
+	 * @author Jamie Rumbelow
+	 */
+	public function success($string) {
+		$this->write($string, 'green');
+	}
+	
+	/**
+	 * Output an error message
+	 *
+	 * @param string $string The string to output
+	 * @return void
+	 * @author Jamie Rumbelow
+	 */
+	public function error($string) {
+		$this->write("Error: " . $string, 'red');
+	}
+	
+	/**
+	 * Write a string to STDOUT, potentially in a colour
+	 *
+	 * @param string $string The string to write
+	 * @param string $colour The colour name in self::$colours
+	 * @return void
+	 * @author Jamie Rumbelow
+	 */
+	public function write($string, $colour = FALSE) {
+		if ($colour) {
+			$output = "\033[" . self::$colours[$colour] . "m";
+			$output .= $string . "\033[0m";
+		} else {
+			$output = $string;
+		}
+		
+		fwrite(STDOUT, $output.PHP_EOL);
+	}
+	
+	/**
+	 * Write a newline
+	 *
+	 * @return void
+	 * @author Jamie Rumbelow
+	 */
+	public function newline() {
+		fwrite(STDOUT, PHP_EOL);
 	}
 	
 	/**
