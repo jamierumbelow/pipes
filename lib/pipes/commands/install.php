@@ -25,7 +25,14 @@ class Pipes_Command_Install {
 	 * @author Jamie Rumbelow
 	 */
 	public function run() {
-		$this->cli->success("INSTALLED");
+		if (empty($this->args)) {
+			$this->cli->error("Package name or URL needed");
+		}
+		
+		// Package name or URL
+		$package_name_or_url = $this->args[0];
+		
+		// $this->cli->success("Installed package " . $this->args[0]);
 	}
 	
 	/**
