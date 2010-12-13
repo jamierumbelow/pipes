@@ -34,6 +34,12 @@ class Pipes_Command_Build {
 		$pipespec_file = $this->args[0];
 		$pipespec_dir = realpath(dirname($pipespec_file)) . '/';
 		
+		// Make sure we can access the .pipespec file
+		if (!file_exists($pipespec_file)) {
+			$this->cli->error("Invalid .pipespec file name");
+			exit;
+		}
+		
 		// Get pipespec
 		$pipespec = include($pipespec_file);
 		
