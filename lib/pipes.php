@@ -16,8 +16,15 @@ require_once 'pipes/downloader.php';
 require_once 'pipes/package.php';
 require_once 'pipes/vcs.php';
 
+if (substr(PHP_OS, 0, 3) == 'WIN') {
+    define('PIPES_IS_WINDOWS', TRUE);
+} else {
+	define('PIPES_IS_WINDOWS', FALSE);
+}
+
 define('PIPES_VERSION', '1.0.0-dev');
 define('PIPES_DIR', dirname(__FILE__) . '/');
+define('PIPES_PACKAGE_DIR', __pipes_figure_out_package_dir() . '/');
 
 class Pipes {
 	static $commands = array('install', 'uninstall', 'update', 'list', 'search', 'sources', 'build', 'help');
@@ -110,4 +117,28 @@ class Pipes {
 		// Run run run
 		$object->run();
 	}
+}
+
+/**
+ * Figure out the ideal package directory
+ *
+ * @return string
+ * @todo Make this a lot more robust
+ * @author Jamie Rumbelow
+ */
+function __pipes_figure_out_package_dir() {
+	$path = ini_get('include_path');
+	
+	// Windows is ridiculous... again...
+	if (PIPES_IS_WINDOWS) {
+		$paths = explode(';', $path);
+	} else {
+		$paths = explode(':', $path);
+	}
+	
+	// Get rid of .
+	array_shift($paths);
+	
+	// Get the first load directory
+	return $paths[0];
 }

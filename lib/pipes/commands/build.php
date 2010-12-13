@@ -49,7 +49,7 @@ class Pipes_Command_Build {
 		
 		foreach ($pipespec['files'] as $file) {
 			$pipe->addFile($pipespec_dir . $file);
-			$pipe->renameName($pipespec_dir . $file, $pipespec['name'] . '-' . $pipespec['version'] . '/' . $file);
+			$pipe->renameName($pipespec_dir . $file, $file);
 		}
 		
 		// Add the .pipespec back in for later!
