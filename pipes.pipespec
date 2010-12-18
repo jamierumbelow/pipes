@@ -16,6 +16,8 @@ return array(
 		'pipes/downloader.php',
 		'pipes/vcs.php',
 		'pipes/package.php',
+		'pipes/helpers.php',
+		'pipes/constants.php',
 		'pipes/commands/build.php',
 		'pipes/commands/help.php',
 		'pipes/commands/install.php',

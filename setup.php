@@ -14,6 +14,7 @@
 
 // Get a few necessities
 require_once 'pipes/helpers.php';
+require_once 'pipes/constants.php';
 require_once 'pipes/version.php';
 
 // Get the contents of the binary
@@ -36,7 +37,7 @@ foreach ($pipespec['files'] as $file) {
 }
 
 // Symlink
-symlink(PIPES_PACKAGE_DIR . '/' . $pipespec['name'].'-'.$pipespec['version'] . '/', PIPES_PACKAGE_DIR . '/' . $pipespec['name']);
+@symlink(PIPES_PACKAGE_DIR . '/' . $pipespec['name'].'-'.$pipespec['version'] . '/', PIPES_PACKAGE_DIR . '/' . $pipespec['name']);
 
 // We're done!
 echo("\033[0;32m" . "The 'pipes' command is now available. Thanks for installing Pipes!" . "\033[0m\n");

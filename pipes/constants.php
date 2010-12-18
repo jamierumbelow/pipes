@@ -18,5 +18,5 @@ if (substr(PHP_OS, 0, 3) == 'WIN') {
 	define('PIPES_IS_WINDOWS', FALSE);
 }
 
-define('PIPES_DIR', dirname(__FILE__) . '../');
+define('PIPES_DIR', dirname(__FILE__) . '/../');
 define('PIPES_PACKAGE_DIR', pipes_figure_out_package_dir() . '/');
