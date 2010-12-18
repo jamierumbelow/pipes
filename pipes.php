@@ -30,7 +30,7 @@ set_exception_handler(array('Pipes_Cli', 'exception'));
 set_error_handler(array('Pipes_Cli', 'error_handler'));
 
 class Pipes {
-	static $commands = array('install', 'uninstall', 'update', 'list', 'search', 'sources', 'build', 'help');
+	static $commands = array('install', 'uninstall', 'list', 'search', 'sources', 'build', 'help');
 	public $cli;
 	
 	/**
