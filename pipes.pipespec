@@ -1,0 +1,26 @@
+<?php 
+
+require 'pipes/version.php';
+
+return array(
+	'name'			=> 'pipes',
+	'version'		=> '1.0.0-dev',
+	'description'	=> 'Pipes is a sexy, sophisticated package manager for PHP',
+	'authors'		=> array('Jamie Rumbelow <jamie@jamierumbelow.net>'),
+	'files'			=> array(
+		'README.md',
+		'LICENSE',
+		'pipes.php',
+		'pipes/version.php',
+		'pipes/cli.php',
+		'pipes/downloader.php',
+		'pipes/vcs.php',
+		'pipes/package.php',
+		'pipes/commands/build.php',
+		'pipes/commands/help.php',
+		'pipes/commands/install.php',
+		'pipes/commands/list.php',
+		'pipes/commands/uninstall.php',
+		'pipes/commands/version.php'
+	)
+);

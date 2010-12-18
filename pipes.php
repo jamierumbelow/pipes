@@ -15,6 +15,7 @@ require_once 'pipes/cli.php';
 require_once 'pipes/downloader.php';
 require_once 'pipes/package.php';
 require_once 'pipes/vcs.php';
+require_once 'pipes/version.php';
 
 if (substr(PHP_OS, 0, 3) == 'WIN') {
     define('PIPES_IS_WINDOWS', TRUE);
@@ -22,7 +23,6 @@ if (substr(PHP_OS, 0, 3) == 'WIN') {
 	define('PIPES_IS_WINDOWS', FALSE);
 }
 
-define('PIPES_VERSION', '1.0.0-dev');
 define('PIPES_DIR', dirname(__FILE__) . '/');
 define('PIPES_PACKAGE_DIR', __pipes_figure_out_package_dir() . '/');
 
