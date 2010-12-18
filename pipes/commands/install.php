@@ -51,6 +51,21 @@ class Pipes_Command_Install {
 	}
 	
 	/**
+	 * Install a pipe from a URL
+	 *
+	 * @param string $url The URL
+	 * @return void
+	 * @author Jamie Rumbelow
+	 */
+	public function install_from_url($url) {
+		// Temporarily download it
+		$pipe_location = Pipes_Downloader::download_from_url($url);
+		
+		// Install it
+		$this->install_pipe($pipe_location);
+	}
+	
+	/**
 	 * Install a pipe from a local .pipe file
 	 *
 	 * @param string $pipe_file The path to the pipe file
@@ -79,24 +94,29 @@ class Pipes_Command_Install {
 	 * @author Jamie Rumbelow
 	 */
 	public function install_pipe($pipe_location) {
-		$pathinfo = pathinfo($pipe_location);
-
+		// Extract that mofo
+		$pipe = new ZipArchive();
+		$tmp = dirname($pipe_location).'/temporary_pipe_extraction_'.md5(time());
+		$pipe->open($pipe_location);
+		$pipe->extractTo($tmp);
+		$pipe->close();
+		
+		// Get the .pipespec
+		$specs = preg_grep("/(.+)\.pipespec$/", scandir($tmp));
+		$spec = $tmp . '/' . current($specs);
+		
+		// Load it
+		$pipespec = include($spec);
+		
+		// Get the pipe name, propa name and version
+		$pipe_name 			= $pipespec['name'] . '-' . $pipespec['version'];
+		$pipe_propa_name 	= $pipespec['name'];
+		$pipe_version 		= $pipespec['version'];
+		
 		// Copy it over
-		if (copy($pipe_location, PIPES_PACKAGE_DIR . $pathinfo['basename'])) {
-			$pipe_name = basename($pipe_location, '.' . $pathinfo['extension']);
-			
-			// Make the directory
-			mkdir(PIPES_PACKAGE_DIR . $pipe_name);
-			
-			// Extract that mofo
-			$pipe = new ZipArchive();
-			$pipe->open(PIPES_PACKAGE_DIR . $pathinfo['basename']);
-			$pipe->extractTo(PIPES_PACKAGE_DIR . $pipe_name . '/');
-			$pipe->close();
-			
-			// Get the pipe's proper name
-			$pipe_propa_name = explode('-', $pipe_name);
-			$pipe_propa_name = $pipe_propa_name[0];
+		if (copy($pipe_location, PIPES_PACKAGE_DIR . $pipe_name . '.pipe')) {
+			// Move it
+			rename($tmp, PIPES_PACKAGE_DIR . $pipe_name);
 			
 			// Get rid of the old symlink
 			if (file_exists(PIPES_PACKAGE_DIR . $pipe_propa_name)) {

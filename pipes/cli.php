@@ -107,7 +107,7 @@ class Pipes_Cli {
 	 * @return void
 	 * @author Jamie Rumbelow
 	 */
-	public function write($string, $colour = FALSE, $indent = 0) {
+	static public function write($string, $colour = FALSE, $indent = 0) {
 		$output = '';
 		
 		if ($indent) {
