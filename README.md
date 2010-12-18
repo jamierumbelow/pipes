@@ -47,6 +47,10 @@ By default, Pipes will search through the default Pipes repository. You can setu
 	sudo pipes sources add source-name http://example.com/pipes-repository
 	sudo pipes sources remove default
 	
+You can uninstall pipes with the uninstall command
+
+	sudo pipes uninstall example_pipe
+	
 Creating your own .pipe
 -----------------------
 
@@ -63,3 +67,8 @@ Creating your own pipe is easy. Create a .pipespec file, with the name of your d
 	);
 	
 *name* and *version* will be used in file names, so they need to be suitably named and only use basic characters. The *files* array should be a list of file names to compile into the pipe, with their paths relative to the .pipespec file. This file is a standard PHP file, so you could easily use something like **scandir()** to dynamically generate a list of files. Include any README and LICENSE files in the *files* array.
+
+You can then build the pipe from the pipespec by using the *build* command, and then push up to the server with the *release* command.
+
+	sudo pipes build example_pipe.pipespec
+	sudo pipes release example_pipe-1.0.0.pipe
