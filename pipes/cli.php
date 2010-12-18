@@ -84,6 +84,18 @@ class Pipes_Cli {
 	public function error($string) {
 		$this->write("Error: " . $string, 'red');
 	}
+	public function error_handler($code, $error) { self::write("Error: " . $error, 'red'); die; }
+	
+	/**
+	 * Output an exception message
+	 *
+	 * @param object $exception The exception object
+	 * @return void
+	 * @author Jamie Rumbelow
+	 */
+	public function exception($exception) {
+		self::write("Exception: " . $exception->getMessage(), 'red');
+	}
 	
 	/**
 	 * Write a string to STDOUT, potentially in a colour

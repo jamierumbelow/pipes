@@ -48,8 +48,6 @@ class Pipes_Command_Install {
 		
 		// It's a remote package...
 		$this->install_from_package_name($package_name_or_url);
-		
-		// $this->cli->success("Installed package " . $this->args[0]);
 	}
 	
 	/**
@@ -107,6 +105,9 @@ class Pipes_Command_Install {
 			
 			// Symlink
 			symlink(PIPES_PACKAGE_DIR . $pipe_name . '/', PIPES_PACKAGE_DIR . $pipe_propa_name);
+			
+			// Output a success message
+			$this->cli->success("Installed package " . $pipe_propa_name);
 			
 			// We're done! Fab
 			return TRUE;

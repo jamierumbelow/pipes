@@ -26,6 +26,9 @@ define('PIPES_VERSION', '1.0.0-dev');
 define('PIPES_DIR', dirname(__FILE__) . '/');
 define('PIPES_PACKAGE_DIR', __pipes_figure_out_package_dir() . '/');
 
+set_exception_handler(array('Pipes_Cli', 'exception'));
+set_error_handler(array('Pipes_Cli', 'error_handler'));
+
 class Pipes {
 	static $commands = array('install', 'uninstall', 'update', 'list', 'search', 'sources', 'build', 'help');
 	public $cli;
