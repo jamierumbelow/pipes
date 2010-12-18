@@ -27,6 +27,7 @@ class Pipes_Command_Install {
 	public function run() {
 		if (empty($this->args)) {
 			$this->cli->error("Package name or URL needed");
+			exit;
 		}
 		
 		// Package name or URL
