@@ -16,7 +16,7 @@
 define('PIPES_CMD_FILENAME', substr(__FILE__, strlen(dirname(__FILE__) . "/")));
 
 // Load Pipes
-require_once 'lib/pipes.php';
+require_once 'pipes.php';
 
 // Parse the command line input and go
 $cli = new Pipes_Cli($argv);

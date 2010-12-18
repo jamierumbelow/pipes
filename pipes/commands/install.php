@@ -82,7 +82,7 @@ class Pipes_Command_Install {
 	 */
 	public function install_pipe($pipe_location) {
 		$pathinfo = pathinfo($pipe_location);
-		
+
 		// Copy it over
 		if (copy($pipe_location, PIPES_PACKAGE_DIR . $pathinfo['basename'])) {
 			$pipe_name = basename($pipe_location, '.' . $pathinfo['extension']);
@@ -95,6 +95,18 @@ class Pipes_Command_Install {
 			$pipe->open(PIPES_PACKAGE_DIR . $pathinfo['basename']);
 			$pipe->extractTo(PIPES_PACKAGE_DIR . $pipe_name . '/');
 			$pipe->close();
+			
+			// Get the pipe's proper name
+			$pipe_propa_name = explode('-', $pipe_name);
+			$pipe_propa_name = $pipe_propa_name[0];
+			
+			// Get rid of the old symlink
+			if (file_exists(PIPES_PACKAGE_DIR . $pipe_propa_name)) {
+				unlink(PIPES_PACKAGE_DIR . $pipe_propa_name);
+			}
+			
+			// Symlink
+			symlink(PIPES_PACKAGE_DIR . $pipe_name . '/', PIPES_PACKAGE_DIR . $pipe_propa_name);
 			
 			// We're done! Fab
 			return TRUE;
