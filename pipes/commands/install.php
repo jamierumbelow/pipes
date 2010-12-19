@@ -103,16 +103,16 @@ class Pipes_Command_Install {
 		$pipe->close();
 		
 		// Get the .pipespec
-		$specs = preg_grep("/(.+)\.pipespec$/", scandir($tmp));
+		$specs = preg_grep("/(.+)\.pipespecjson$/", scandir($tmp));
 		$spec = $tmp . '/' . current($specs);
 		
 		// Load it
-		$pipespec = include($spec);
+		$pipespec = json_decode(file_get_contents($spec));
 		
 		// Get the pipe name, propa name and version
-		$pipe_name 			= $pipespec['name'] . '-' . $pipespec['version'];
-		$pipe_propa_name 	= $pipespec['name'];
-		$pipe_version 		= $pipespec['version'];
+		$pipe_name 			= $pipespec->name . '-' . $pipespec->version;
+		$pipe_propa_name 	= $pipespec->name;
+		$pipe_version 		= $pipespec->version;
 		
 		// Copy it over
 		if (copy($pipe_location, PIPES_PACKAGE_DIR . $pipe_name . '.pipe')) {

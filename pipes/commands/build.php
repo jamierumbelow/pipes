@@ -56,12 +56,20 @@ class Pipes_Command_Build {
 			}
 		}
 		
+		// Generate a JSON representation of the pipespec
+		file_put_contents($pipespec_file . 'json', json_encode($pipespec));
+		
 		// Add the .pipespec back in for later!
-		$pipe->addFile($pipespec_dir . $pipespec_file);
-		$pipe->renameName($pipespec_dir . $pipespec_file, basename($pipespec_file));
+		$pipe->addFile($pipespec_dir . $pipespec_file . 'json');
+		$pipe->renameName($pipespec_dir . $pipespec_file . 'json', basename($pipespec_file . 'json'));
 		
 		// We're done. Fab.
 		$pipe->close();
+		
+		// Get rid of the JSON
+		unlink($pipespec_dir . $pipespec_file . 'json');
+		
+		// And say goodbye!
 		$this->cli->success("Successfully built pipe '".$pipespec['name'].'-'.$pipespec['version'].".pipe'");
 	}
 	
