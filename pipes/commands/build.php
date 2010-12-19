@@ -48,8 +48,12 @@ class Pipes_Command_Build {
 		$pipe->open($pipespec_dir . $pipespec['name'] . '-' . $pipespec['version'] . '.pipe', ZipArchive::CREATE);
 		
 		foreach ($pipespec['files'] as $file) {
-			$pipe->addFile($pipespec_dir . $file);
-			$pipe->renameName($pipespec_dir . $file, $file);
+			if (file_exists($pipespec_dir . $file)) {
+				$pipe->addFile($pipespec_dir . $file);
+				$pipe->renameName($pipespec_dir . $file, $file);
+			} else {
+				$this->cli->error("File: " . $file . " couldn't be found. Continuing anyway.");
+			}
 		}
 		
 		// Add the .pipespec back in for later!
