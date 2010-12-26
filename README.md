@@ -44,8 +44,8 @@ Using the pipes command you can search through and list the pipes:
 	
 By default, Pipes will search through the default Pipes repository. You can setup other repositories by using the 'sources' command.
 
-	sudo pipes sources add source-name http://example.com/pipes-repository
-	sudo pipes sources remove default
+	sudo pipes sources add http://example.com/pipes-repository
+	sudo pipes sources remove http://example.com/pipes-repository
 	
 You can uninstall pipes with the uninstall command
 
