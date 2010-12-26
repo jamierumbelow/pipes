@@ -15,8 +15,15 @@
 // Define a few quick constants
 define('PIPES_CMD_FILENAME', substr(__FILE__, strlen(dirname(__FILE__) . "/")));
 
+// Dev mode?
+if ($argv[$argc-1] == '--development-mode') {
+	$pipes_location = dirname(__FILE__) . '/../pipes.php';
+} else {
+	$pipes_location = 'pipes/pipes.php';
+}
+
 // Load Pipes
-require_once 'pipes/pipes.php';
+require_once $pipes_location;
 
 // Parse the command line input and go
 $cli = new Pipes_Cli($argv);
