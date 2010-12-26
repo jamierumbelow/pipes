@@ -91,6 +91,10 @@ class Pipes {
 			exit;
 		}
 		
+		// Load the config file
+		$json = file_get_contents(PIPES_DIR . 'config.json');
+		self::$config = json_decode($json);
+		
 		// Load the command file
 		if ($command) {
 			if (file_exists(PIPES_DIR . 'pipes/commands/'.$command.'.php')) {
