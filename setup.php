@@ -39,8 +39,5 @@ foreach ($pipespec['files'] as $file) {
 // Symlink
 @symlink(PIPES_PACKAGE_DIR . '/' . $pipespec['name'].'-'.$pipespec['version'] . '/', PIPES_PACKAGE_DIR . '/' . $pipespec['name']);
 
-// Write the config file
-file_put_contents(PIPES_PACKAGE_DIR.'/pipes/config.json', json_encode(array('sources' => array('http://PIPES_URL/pipes'))));
-
 // We're done!
 echo("\033[0;32m" . "The 'pipes' command is now available. Thanks for installing Pipes!" . "\033[0m\n");

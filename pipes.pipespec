@@ -10,6 +10,7 @@ return array(
 	'files'			=> array(
 		'README.md',
 		'LICENSE',
+		'config.json',
 		'pipes.php',
 		'pipes/version.php',
 		'pipes/cli.php',
