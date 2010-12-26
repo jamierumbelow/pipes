@@ -24,6 +24,7 @@ set_error_handler(array('Pipes_Cli', 'error_handler'));
 
 class Pipes {
 	static $commands = array('install', 'uninstall', 'list', 'search', 'sources', 'build', 'help');
+	static $config = array();
 	public $cli;
 	
 	/**
@@ -55,6 +56,16 @@ class Pipes {
 		} else {
 			$cli->error("No help docs for command '$command'");
 		}
+	}
+	
+	/**
+	 * Write the config file
+	 *
+	 * @return void
+	 * @author Jamie Rumbelow
+	 */
+	static public function write_config() {
+		file_put_contents(PIPES_DIR . 'config.json', json_encode(self::$config));
 	}
 	
 	/**
