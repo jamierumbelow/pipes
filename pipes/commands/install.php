@@ -62,8 +62,14 @@ class Pipes_Command_Install {
 		// Temporarily download it
 		$pipe_location = Pipes_Downloader::download_from_url($url);
 		
-		// Install it
-		$this->install_pipe($pipe_location);
+		// Install it?
+		if (!isset($this->flags['l']) || !$this->flags['l']) {
+			$this->install_pipe($pipe_location);
+		} else {
+			$pathinfo = pathinfo($pipe_location);
+			copy($pipe_location, getcwd().'/'.$pathinfo['filename'].'.pipe');
+			$this->cli->success("Successfully downloaded ".$url." to " . getcwd().'/'.$pathinfo['filename'].'.pipe');
+		}
 	}
 	
 	/**
