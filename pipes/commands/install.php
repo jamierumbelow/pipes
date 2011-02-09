@@ -96,11 +96,7 @@ class Pipes_Command_Install {
 	 */
 	public function install_pipe($pipe_location) {
 		// Extract that mofo
-		$pipe = new ZipArchive();
-		$tmp = dirname($pipe_location).'/temporary_pipe_extraction_'.md5(time());
-		$pipe->open($pipe_location);
-		$pipe->extractTo($tmp);
-		$pipe->close();
+		$tmp = Pipes_Package::extract($pipe_location);
 		
 		// Get the .pipespec
 		$specs = preg_grep("/(.+)\.pipespecjson$/", scandir($tmp));

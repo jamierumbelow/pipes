@@ -40,34 +40,8 @@ class Pipes_Command_Build {
 			exit;
 		}
 		
-		// Get pipespec
-		$pipespec = include($pipespec_file);
-		
-		// Create the ZipArchive class and add all the files
-		$pipe = new ZipArchive();
-		$pipe->open($pipespec_dir . $pipespec['name'] . '-' . $pipespec['version'] . '.pipe', ZipArchive::CREATE);
-		
-		foreach ($pipespec['files'] as $file) {
-			if (file_exists($pipespec_dir . $file)) {
-				$pipe->addFile($pipespec_dir . $file);
-				$pipe->renameName($pipespec_dir . $file, $file);
-			} else {
-				$this->cli->error("File: " . $file . " couldn't be found. Continuing anyway.");
-			}
-		}
-		
-		// Generate a JSON representation of the pipespec
-		file_put_contents($pipespec_file . 'json', json_encode($pipespec));
-		
-		// Add the .pipespec back in for later!
-		$pipe->addFile($pipespec_dir . $pipespec_file . 'json');
-		$pipe->renameName($pipespec_dir . $pipespec_file . 'json', basename($pipespec_file . 'json'));
-		
-		// We're done. Fab.
-		$pipe->close();
-		
-		// Get rid of the JSON
-		unlink($pipespec_dir . $pipespec_file . 'json');
+		// Build it
+		Pipes_Package::build($pipespec_dir, $pipespec_file);
 		
 		// And say goodbye!
 		$this->cli->success("Successfully built pipe '".$pipespec['name'].'-'.$pipespec['version'].".pipe'");
