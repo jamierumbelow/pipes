@@ -143,7 +143,7 @@ class Pipes_Command_Install {
 	public function help() {
 		$this->cli->newline();
 			$this->cli->write("Flags:", FALSE, 1);
-				$this->cli->write(str_pad("-d", 5) . "Install any missing dependencies (default TRUE)", FALSE, 2);
+				$this->cli->write(str_pad("-d", 5) . "Don't install pipe dependencies (default FALSE)", FALSE, 2);
 				$this->cli->write(str_pad("-l", 5) . "Download to working directory, don't install", FALSE, 2);
 				$this->cli->write(str_pad("-v", 5) . "Enable verbose output", FALSE, 2);
 				$this->cli->write(str_pad("-q", 5) . "Be very, very quiet", FALSE, 2);
