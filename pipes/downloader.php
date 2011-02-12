@@ -12,6 +12,7 @@
  **/
 
 class Pipes_Downloader {
+	static $api = 'http://pipesphp.local/api/';
 	
 	/**
 	 * Download a pipe from a URL
@@ -39,5 +40,34 @@ class Pipes_Downloader {
 		
 		// Return the filename
 		return $name;
+	}
+	
+	/**
+	 * Make an API request (for releasing pipes)
+	 *
+	 * @return array
+	 * @author Jamie Rumbelow
+	 **/
+	static public function api_request($endpoint, $method = 'GET', $parameters = array()) {
+		// Set some stuff up
+		$url = self::$api . $endpoint;
+		$curl = curl_init();
+		
+		// Set curlopts
+		curl_setopt($curl, CURLOPT_URL, $url);
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
+		
+		// POST? Params?
+		if (strtoupper($method) == 'POST') {
+			curl_setopt($curl, CURLOPT_POST, TRUE);
+			curl_setopt($curl, CURLOPT_POSTFIELDS, $parameters);
+		}
+		
+		// Make the request!
+		$response = curl_exec($curl);
+		curl_close($curl);
+		die($response);
+		// Decode and return the response
+		return json_decode($response);
 	}
 }
