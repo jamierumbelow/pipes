@@ -56,6 +56,73 @@ class Pipes_Cli {
 	);
 	
 	/**
+	 * Write a string to STDOUT, potentially in a colour
+	 * and potentially indented
+	 *
+	 * @param string $string The string to write
+	 * @param string $colour The colour name in self::$colours
+	 * @param integer $indent The indent level
+	 * @return void
+	 * @author Jamie Rumbelow
+	 */
+	static public function write($string, $colour = FALSE, $indent = 0) {
+		$output = '';
+		
+		if ($indent) {
+			$output .= str_repeat("  ", $indent);
+		}
+		
+		if ($colour) {
+			$output .= "\033[" . self::$colours[$colour] . "m";
+			$output .= $string . "\033[0m";
+		} else {
+			$output .= $string;
+		}
+		
+		fwrite(STDOUT, $output.PHP_EOL);
+	}
+	
+	/**
+	 * Read from the command line
+	 *
+	 * @return string
+	 * @author Jamie Rumbelow
+	 **/
+	static public function read($prompt) {
+		while(!isset($input)) { 
+			echo $prompt;
+			$input = strtolower(trim(fgets(STDIN)));
+		}
+		
+		return $input;
+	}
+	
+	/**
+	 * Read from the command line silently (masking input)
+	 *
+	 * @param string $prompt Prompt string
+	 * @return string
+	 * @author Jamie Rumbelow
+	 */
+	static public function read_silently($prompt) {
+		if (preg_match('/^win/i', PHP_OS)) {
+			$vbscript = sys_get_temp_dir() . 'prompt_password.vbs';
+			file_put_contents($vbscript, 'wscript.echo(InputBox("' . addslashes($prompt) . '", "", "password here"))');
+			
+			$command = "cscript //nologo " . escapeshellarg($vbscript);
+			$input = rtrim(shell_exec($command));
+			
+			unlink($vbscript);
+		} else {	
+			$command = "/usr/bin/env bash -c 'read -s -p \"" . addslashes($prompt) . "\" mypassword && echo \$mypassword'";
+			$input = rtrim(shell_exec($command));
+			echo "\n";
+		}
+		
+		return $input;
+	}
+	
+	/**
 	 * Creates the class and parses arguments
 	 *
 	 * @param array $args Array of argv arguments
@@ -100,33 +167,6 @@ class Pipes_Cli {
 	 */
 	public function exception($exception) {
 		self::write("Exception: " . $exception->getMessage(), 'red');
-	}
-	
-	/**
-	 * Write a string to STDOUT, potentially in a colour
-	 * and potentially indented
-	 *
-	 * @param string $string The string to write
-	 * @param string $colour The colour name in self::$colours
-	 * @param integer $indent The indent level
-	 * @return void
-	 * @author Jamie Rumbelow
-	 */
-	static public function write($string, $colour = FALSE, $indent = 0) {
-		$output = '';
-		
-		if ($indent) {
-			$output .= str_repeat("  ", $indent);
-		}
-		
-		if ($colour) {
-			$output .= "\033[" . self::$colours[$colour] . "m";
-			$output .= $string . "\033[0m";
-		} else {
-			$output .= $string;
-		}
-		
-		fwrite(STDOUT, $output.PHP_EOL);
 	}
 	
 	/**
