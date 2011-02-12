@@ -100,7 +100,7 @@ class Pipes_Package {
 	 **/
 	static public function decode_from_file($file) {
 		// Extract that bad boy
-		$pipeloc = Pipes_Package::extract($file);
+		$tmp = Pipes_Package::extract($file);
 		
 		// Get the .pipespec
 		$specs = preg_grep("/(.+)\.pipespecjson$/", scandir($tmp));
