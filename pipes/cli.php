@@ -89,7 +89,7 @@ class Pipes_Cli {
 	public function error($string) {
 		$this->write("Error: " . $string, 'red');
 	}
-	public function error_handler($code, $error) { self::write("Error: " . $error, 'red'); die; }
+	public function error_handler($code, $error) { if ($code !== E_STRICT) { self::write("Error: " . $error, 'red'); die; } }
 	
 	/**
 	 * Output an exception message
