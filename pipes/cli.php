@@ -11,6 +11,11 @@
  * @license MIT License
  **/
 
+// Make sure we have STDOUT
+if (!defined('STDOUT')) {
+	define('STDOUT', fopen('php://output', 'w'));
+}
+
 /**
  * The Pipes command line system. Provides all of Pipes'
  * IO handling, parses command line flags and such.
