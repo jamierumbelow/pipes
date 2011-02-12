@@ -77,22 +77,6 @@ class Pipes_Package {
 	}
 	
 	/**
-	 * Decode and return a new object from a Pipe's raw
-	 * binary string.
-	 *
-	 * @return Pipes_Pipe
-	 * @author Jamie Rumbelow
-	 **/
-	static public function decode_from_string($string) {
-		// Write a temporary file
-		$name = tempnam('/tmp', 'pipes_');
-		file_put_contents($name, $string);
-		
-		// Decode and return
-		return self::decode_from_file($name);
-	}
-	
-	/**
 	 * Decode and return a new object from a .pipe
 	 *
 	 * @return Pipes_Pipe
