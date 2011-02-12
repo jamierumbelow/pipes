@@ -66,7 +66,7 @@ class Pipes_Downloader {
 		// Make the request!
 		$response = curl_exec($curl);
 		curl_close($curl);
-		die($response);
+		
 		// Decode and return the response
 		return json_decode($response);
 	}
