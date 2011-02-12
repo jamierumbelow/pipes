@@ -88,8 +88,19 @@ class Pipes_Package {
 		$name = tempnam('/tmp', 'pipes_');
 		file_put_contents($name, $string);
 		
+		// Decode and return
+		return self::decode_from_file($name);
+	}
+	
+	/**
+	 * Decode and return a new object from a .pipe
+	 *
+	 * @return Pipes_Pipe
+	 * @author Jamie Rumbelow
+	 **/
+	static public function decode_from_file($file) {
 		// Extract that bad boy
-		$pipeloc = Pipes_Package::extract($name);
+		$pipeloc = Pipes_Package::extract($file);
 		
 		// Get the .pipespec
 		$specs = preg_grep("/(.+)\.pipespecjson$/", scandir($tmp));
