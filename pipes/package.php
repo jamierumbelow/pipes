@@ -75,4 +75,33 @@ class Pipes_Package {
 		// Return the temp name
 		return $tmp;
 	}
+	
+	/**
+	 * Decode and return a new object from a Pipe's raw
+	 * binary string.
+	 *
+	 * @return Pipes_Pipe
+	 * @author Jamie Rumbelow
+	 **/
+	static public function decode_from_string($string) {
+		// Write a temporary file
+		$name = tempnam('/tmp', 'pipes_');
+		file_put_contents($name, $string);
+		
+		// Extract that bad boy
+		$pipeloc = Pipes_Package::extract($name);
+		
+		// Get the .pipespec
+		$specs = preg_grep("/(.+)\.pipespecjson$/", scandir($tmp));
+		$spec = $tmp . '/' . current($specs);
+		
+		// Load it
+		$pipespec = json_decode(file_get_contents($spec));
+		
+		// Create the Pipes_Pipe object
+		$pipe = new Pipes_Pipe($pipespec);
+		
+		// Return it!
+		return $pipe;
+	}
 }
