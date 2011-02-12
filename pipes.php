@@ -15,6 +15,7 @@ require_once 'pipes/cli.php';
 require_once 'pipes/downloader.php';
 require_once 'pipes/package.php';
 require_once 'pipes/vcs.php';
+require_once 'pipes/pipe.php';
 require_once 'pipes/version.php';
 require_once 'pipes/helpers.php';
 require_once 'pipes/constants.php';
