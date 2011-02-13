@@ -30,15 +30,14 @@ require_once 'pipes/version.php';
 
 /**/
 
-
-// Get the contents of the binary
+// Get the contents of the binary file.
 $binary = file_get_contents('./bin/pipes');
-
-// Copy over the binary
-$f = fopen('/usr/bin/pipes', 'w');
+$exec = PIPES_IS_WINDOWS ? 'C:/WINDOWS/pipes.php' : '/usr/bin/pipes';
+// Copy over the binary.
+$f = fopen($exec, 'w');
 fwrite($f, $binary);
 fclose($f);
-chmod('/usr/bin/pipes', 0755);
+chmod($exec, 0755);
 
 // Load the .pipespec to get a list of files
 $pipespec = include('pipes.pipespec');
