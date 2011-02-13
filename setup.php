@@ -37,6 +37,13 @@ if(PIPES_IS_WINDOWS) {
 	// first line of the binary that specifies which binary to use on *nix
 	// systems.
 	$binary = substr($binary, strpos($binary, "\n") - 1);
+	// Next, create a Batch file to act as our executable wrapper.
+	// The following is a workaround to map "pipes args" to "php pipes.php args".
+	$batch = 'php pipes.php %*';
+	$b = fopen('C:/WINDOWS/pipes.bat', 'w');
+	fwrite($b, $batch);
+	fclose($b);
+	chmod($b, 0755);
 }
 $exec = PIPES_IS_WINDOWS ? 'C:/WINDOWS/pipes.php' : '/usr/bin/pipes';
 // Copy over the binary.
