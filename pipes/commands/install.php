@@ -42,7 +42,7 @@ class Pipes_Command_Install {
 		// Is it a .pipe?
 		$pathinfo = pathinfo($package_name_or_url);
 		
-		if ($pathinfo['extension'] == 'pipe') {
+		if (isset($pathinfo['extension']) && $pathinfo['extension'] == 'pipe') {
 			$this->install_from_local_pipe($package_name_or_url);
 			exit;
 		}
@@ -94,6 +94,47 @@ class Pipes_Command_Install {
 	}
 	
 	/**
+	 * Install a pipe from a package name
+	 *
+	 * @return void
+	 * @author Jamie Rumbelow
+	 **/
+	public function install_from_package_name($name) {
+		// Let the user know we're doing something
+		$this->cli->write('Searching for pipe...');
+		
+		// Go look for it!
+		$tmp = Pipes_Downloader::download_from_url(Pipes_Downloader::$api . 'pipe?name=' . $name);
+		
+		// Awesome. Check for -l flag
+		if (!isset($this->flags['l']) || !$this->flags['l']) {
+			// Install it!
+			$this->install_pipe($tmp);
+		} else {
+			// Extract that mofo
+			$dir = Pipes_Package::extract($tmp);
+			
+			// Get the .pipespec
+			$specs = preg_grep("/(.+)\.pipespecjson$/", scandir($dir));
+			$spec = $dir . '/' . current($specs);
+			
+			// Load it
+			$pipespec = json_decode(file_get_contents($spec));
+			
+			// Get the pipe name, propa name and version
+			$pipe_name 			= $pipespec->name . '-' . $pipespec->version;
+			$pipe_propa_name 	= $pipespec->name;
+			$pipe_version 		= $pipespec->version;
+			
+			// Copy it to the current directory for -l
+			copy($tmp, getcwd().'/'.$pipe_name.'.pipe');
+			
+			// We're done
+			$this->cli->success("Successfully downloaded pipe ".$name." to " . getcwd().'/'.$pipe_name.'.pipe');
+		}
+	}
+	
+	/**
 	 * Install a pipe
 	 *
 	 * @param string $pipe_location The absolute path to the .pipe
@@ -118,6 +159,27 @@ class Pipes_Command_Install {
 		
 		// Copy it over
 		if (copy($pipe_location, PIPES_PACKAGE_DIR . $pipe_name . '.pipe')) {
+			// Already exists? Get rid of it and re-install
+			if (file_exists(PIPES_PACKAGE_DIR . $pipe_name)) {
+				$dirname = PIPES_PACKAGE_DIR . $pipe_name;
+				$dir = scandir($dirname);
+				array_shift($dir);
+				array_shift($dir);
+
+				// DIRNAME/
+				if (substr($dirname, 0, strlen($dirname)-1) !== '/') {
+					$dirname .= '/';
+				}
+
+				// Loop and unlink the files
+				foreach ($dir as $file) {
+					unlink($dirname . $file);
+				}
+
+				// Remove the directory
+				rmdir($dirname);
+			}
+			
 			// Move it
 			rename($tmp, PIPES_PACKAGE_DIR . $pipe_name);
 			
