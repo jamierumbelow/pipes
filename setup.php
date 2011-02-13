@@ -49,8 +49,10 @@ if(PIPES_IS_WINDOWS) {
 	fclose($b);
 	chmod('C:/WINDOWS/pipes.bat', 0755);
 	// Create the Pipes installation directory before we try to create the binary
-	// there.
-	mkdir('C:/Program Files/PHP/Pipes', 0755, true);
+	// there. Set the permissions to "hey, come screw with me, I won't fight
+	// back", otherwise we won't be able to write to it later, since we are in...
+	// What do you call root on Windows? :\
+	mkdir('C:/Program Files/PHP/Pipes', 0777, true);
 }
 // Copy over the binary.
 $f = fopen($exec, 'w');
