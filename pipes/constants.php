@@ -12,11 +12,12 @@
  * @todo Windows support
  **/
 
-if (substr(PHP_OS, 0, 3) == 'WIN') {
-    define('PIPES_IS_WINDOWS', TRUE);
-} else {
-	define('PIPES_IS_WINDOWS', FALSE);
-}
+// Use this instead of PHP_OS, as it will determine the host OS, rather than the
+// OS this installation of PHP was compiled for.
+defined('PIPES_IS_WINDOWS') || define(
+	'PIPES_IS_WINDOWS',
+	strpos(strtolower(php_uname('s')), 'window') !== FALSE
+);
 
 define('PIPES_DIR', dirname(__FILE__) . '/../');
 define('PIPES_PACKAGE_DIR', pipes_figure_out_package_dir() . '/');
