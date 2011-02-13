@@ -49,7 +49,7 @@ function pipes_figure_out_package_dir() {
 	// Get rid of CWD.
 	array_shift($paths);
 	// Get the first load directory.
-	return $paths[0];
+	return path($paths[0]);
 }
 
 /**
