@@ -45,7 +45,7 @@ if(PIPES_IS_WINDOWS) {
 	// THIS AS <del>ROOT</del><del>ADMIN</del><ins>RIGHT-CLICK COMMAND-PROMPT IN
 	// THE START MENU AND SELECT "RUN AS ADMINISTRATOR", THEN CLICK YES</ins>.
 	$b = fopen('C:/WINDOWS/pipes.bat', 'w');
-	fwrite('php "' . $exec . '" %*', $b);
+	fwrite($b, 'php "' . $exec . '" %*');
 	fclose($b);
 	chmod('C:/WINDOWS/pipes.bat', 0755);
 	// Create the Pipes installation directory before we try to create the binary
