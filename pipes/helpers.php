@@ -44,18 +44,11 @@ if(!function_exists('path')) {
  */
 function pipes_figure_out_package_dir() {
 	$path = ini_get('include_path');
-	
-	// Windows is ridiculous... again...
-	if (substr(PHP_OS, 0, 3) == 'WIN') {
-		$paths = explode(';', $path);
-	} else {
-		$paths = explode(':', $path);
-	}
-	
-	// Get rid of .
+	// Use PATH_SEPARATOR, so we don't have to worry about the host OS.
+	$paths = explode(PATH_SEPARATOR, $path);
+	// Get rid of CWD.
 	array_shift($paths);
-	
-	// Get the first load directory
+	// Get the first load directory.
 	return $paths[0];
 }
 
