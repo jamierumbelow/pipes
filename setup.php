@@ -43,7 +43,7 @@ if(PIPES_IS_WINDOWS) {
 	// Next, determine the current users home directory. This will return the path
 	// to the logged in user, regardless of running as Administrator. This will be
 	// the pipes installation folder.
-	$installpath = path(trim(shell_exec('echo %USERPROFILE%')) . '/pipes/');
+	$installpath = path(trim(shell_exec('echo %USERPROFILE%'))) . '/pipes/';
 	$exec = $installpath . 'pipes.php';
 	// Now, create a Batch file to act as our executable wrapper, it is a
 	// workaround to map "pipes args" to "php pipes.php args". YOU NEED TO RUN
