@@ -32,21 +32,27 @@ require_once 'pipes/version.php';
 
 // Get the contents of the binary file.
 $binary = file_get_contents('./bin/pipes');
+// What if PHP isn't installed in "C:/Program Files/PHP"? WELL SCREW IT, YOU
+// THINK OF A BETTER INSTALLATION PATH ON WINDOWS.
 $exec = PIPES_IS_WINDOWS ? 'C:/Program Files/PHP/Pipes/pipes.php' : '/usr/bin/pipes';
+// If we're on Windows, extra installation steps are required.
 if(PIPES_IS_WINDOWS) {
-	// The extra steps that will be necessary for Windows. Firstly, remove the
-	// first line of the binary that specifies which binary to use on *nix
-	// systems.
+	// Firstly, remove the first line of the binary that specifies which binary to
+	// use on *nix systems.
 	$binary = substr($binary, strpos($binary, "\n") - 1);
-	// Next, create a Batch file to act as our executable wrapper.
-	// The following is a workaround to map "pipes args" to "php pipes.php args".
+	// Next, create a Batch file to act as our executable wrapper, it is a
+	// workaround to map "pipes args" to "php pipes.php args". YOU NEED TO RUN
+	// THIS AS <del>ROOT</del><del>ADMIN</del><ins>RIGHT-CLICK COMMAND-PROMPT IN
+	// THE START MENU AND SELECT "RUN AS ADMINISTRATOR", THEN CLICK YES</ins>.
 	$b = fopen('C:/WINDOWS/pipes.bat', 'w');
 	fwrite('php "' . $exec . '" %*', $b);
 	fclose($b);
 	chmod('C:/WINDOWS/pipes.bat', 0755);
+	// Create the Pipes installation directory before we try to create the binary
+	// there.
+	mkdir('C:/Program Files/PHP/Pipes', 0755, true);
 }
 // Copy over the binary.
-mkdir('C:/Program Files/PHP/Pipes', 0755, true);
 $f = fopen($exec, 'w');
 fwrite($f, $binary);
 fclose($f);
