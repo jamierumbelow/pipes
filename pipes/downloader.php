@@ -12,7 +12,7 @@
  **/
 
 class Pipes_Downloader {
-	static $api = 'http://pipesphp.local/api/';
+	static $api = 'http://pipesphp.org/api/';
 	
 	/**
 	 * Download a pipe from a URL
