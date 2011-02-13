@@ -58,6 +58,10 @@ fwrite($f, $binary);
 fclose($f);
 chmod($exec, 0755);
 
+/**
+ * Executables installed, move on to copying core files over.
+ */
+
 // Load the .pipespec to get a list of files
 $pipespec = include('pipes.pipespec');
 
