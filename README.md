@@ -80,6 +80,7 @@ There are a number of things currently wrong or missing from Pipes that will nee
 
 * Make the pipes_figure_out_package_dir() function a LOT cleverer. Figure out the best package directory and make sure it ends with a slash as to not cause path issues
 * Configurable binary, package and install directories. Ideally make the setup script intelligent enough to modify the PATH and PHP include_path automatically.
+* Support for VCS (Git, Mercurial, perhaps SVN) backed pipes rather than http://pipesphp.org pipes.
 * Windows compatibility. Ew.
 * A local pipe isolation tool, in a similar vein to [John Barnette's Isolate](https://github.com/jbarnette/isolate).
 * A local pipes installation tool, allowing each project to "host" its own pipes install and repository for servers that really don't like it.
