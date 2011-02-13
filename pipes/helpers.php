@@ -22,17 +22,17 @@
  * @author  Alexander Baldwin
  */
 if(!function_exists('path')) {
-  function path($path) {
-    // The the path is not valid
-    if(!is_string($path) || !is_string($path = realpath($path))) {
-      return false;
-    }
-    // Replace any backslashes with obliques, as Windows can handle both as
-    // directory separators. Remove any repeating obliques.
-    $path = preg_replace('#//+#', '/', str_replace('\\', '/', $path));
-    // Ensure the returning path ends in a trailing slash if it is a directory.
-    return is_dir($path) ? rtrim($path, '/') . '/' : $path;
-  }
+	function path($path) {
+		// The the path is not valid
+		if(!is_string($path) || !is_string($path = realpath($path))) {
+			return false;
+		}
+		// Replace any backslashes with obliques, as Windows can handle both as
+		// directory separators. Remove any repeating obliques.
+		$path = preg_replace('#//+#', '/', str_replace('\\', '/', $path));
+		// Ensure the returning path ends in a trailing slash if it is a directory.
+		return is_dir($path) ? rtrim($path, '/') . '/' : $path;
+	}
 }
 
 /**
