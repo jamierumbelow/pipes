@@ -43,8 +43,8 @@ if(PIPES_IS_WINDOWS) {
 	// Next, determine the current users home directory. This will return the path
 	// to the logged in user, regardless of running as Administrator. This will be
 	// the pipes installation folder.
-	$userprofile = path(trim(shell_exec('echo %USERPROFILE%')));
-	$exec = $userprofile . 'pipes/pipes.php';
+	$installpath = path(trim(shell_exec('echo %USERPROFILE%')) . '/pipes/');
+	$exec = $installpath . 'pipes.php';
 	// Now, create a Batch file to act as our executable wrapper, it is a
 	// workaround to map "pipes args" to "php pipes.php args". YOU NEED TO RUN
 	// THIS AS <del>ROOT</del><del>ADMIN</del><ins>RIGHT-CLICK COMMAND-PROMPT IN
@@ -57,7 +57,7 @@ if(PIPES_IS_WINDOWS) {
 	// there. Set the permissions to "hey, come screw with me, I won't fight
 	// back", otherwise we won't be able to write to it later, since we are in...
 	// What do you call root on Windows? :\
-	mkdir('C:/Program Files/PHP/Pipes', 0777, true);
+	mkdir($installpath, 0777, true);
 }
 // Copy over the binary.
 $f = fopen($exec, 'w');
