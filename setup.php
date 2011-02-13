@@ -39,7 +39,7 @@ $exec = PIPES_IS_WINDOWS ? 'C:/Program Files/PHP/Pipes/pipes.php' : '/usr/bin/pi
 if(PIPES_IS_WINDOWS) {
 	// Firstly, remove the first line of the binary that specifies which binary to
 	// use on *nix systems.
-	$binary = substr($binary, strpos($binary, "\n") - 1);
+	$binary = substr($binary, strpos($binary, "\n") + 1);
 	// Next, create a Batch file to act as our executable wrapper, it is a
 	// workaround to map "pipes args" to "php pipes.php args". YOU NEED TO RUN
 	// THIS AS <del>ROOT</del><del>ADMIN</del><ins>RIGHT-CLICK COMMAND-PROMPT IN
