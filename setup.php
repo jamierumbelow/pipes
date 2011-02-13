@@ -41,11 +41,12 @@ if(PIPES_IS_WINDOWS) {
 	// Next, create a Batch file to act as our executable wrapper.
 	// The following is a workaround to map "pipes args" to "php pipes.php args".
 	$b = fopen('C:/WINDOWS/pipes.bat', 'w');
-	fwrite('php "' . $exec . '" %*', $batch);
+	fwrite('php "' . $exec . '" %*', $b);
 	fclose($b);
 	chmod('C:/WINDOWS/pipes.bat', 0755);
 }
 // Copy over the binary.
+mkdir('C:/Program Files/PHP/Pipes', 0755, true);
 $f = fopen($exec, 'w');
 fwrite($f, $binary);
 fclose($f);
