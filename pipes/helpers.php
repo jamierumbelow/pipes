@@ -48,8 +48,17 @@ function pipes_figure_out_package_dir() {
 	$paths = explode(PATH_SEPARATOR, $path);
 	// Get rid of CWD.
 	array_shift($paths);
-	// Get the first load directory.
-	return path($paths[0]);
+	// Get the first *valid* load directory, returning a consistently formatted
+	// path.
+	foreach($paths as $path) {
+		$path = path($path);
+		if(is_string($path) && is_dir($path)) {
+			return $path;
+		}
+	}
+	// If on the terrible off-chance we don't have an include directory (not gonna
+	// happen), return the CWD.
+	return path('.');
 }
 
 /**
