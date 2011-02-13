@@ -41,7 +41,7 @@ Using the pipes command you can search through and list the pipes:
 	sudo pipes search example_
 	sudo pipes list --remote # View all remote pipes 
 	sudo pipes list --local # View all installed pipes
-	
+	De
 By default, Pipes will search through the default Pipes repository. You can setup other repositories by using the 'sources' command.
 
 	sudo pipes sources add http://example.com/pipes-repository
@@ -72,3 +72,17 @@ You can then build the pipe from the pipespec by using the *build* command, and 
 
 	sudo pipes build example_pipe.pipespec
 	sudo pipes release example_pipe-1.0.0.pipe
+	
+To-do
+-----
+
+There are a number of things currently wrong or missing from Pipes that will need to be worked on for a stable 1.0.0 to be released. These are all pretty much crucial; one of the aims of Pipes is to get good-fantastic compatibility over a wide range of server configurations.
+
+	* Make the pipes_figure_out_package_dir() function a LOT cleverer. Figure out the best package directory and make sure it ends with a slash as to not cause path issues
+	* Configurable binary, package and install directories. Ideally make the setup script intelligent enough to modify the PATH and PHP include_path automatically.
+	* Windows compatibility. Ew.
+	* A local pipe isolation tool, in a similar vein to [John Barnette's Isolate](https://github.com/jbarnette/isolate).
+	* A local pipes installation tool, allowing each project to "host" its own pipes install and repository for servers that really don't like it.
+	* The search command
+	* Dependency management
+	
