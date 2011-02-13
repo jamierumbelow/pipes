@@ -32,6 +32,12 @@ require_once 'pipes/version.php';
 
 // Get the contents of the binary file.
 $binary = file_get_contents('./bin/pipes');
+if(PIPES_IS_WINDOWS) {
+	// The extra steps that will be necessary for Windows. Firstly, remove the
+	// first line of the binary that specifies which binary to use on *nix
+	// systems.
+	$binary = substr($binary, strpos($binary, "\n") - 1);
+}
 $exec = PIPES_IS_WINDOWS ? 'C:/WINDOWS/pipes.php' : '/usr/bin/pipes';
 // Copy over the binary.
 $f = fopen($exec, 'w');
