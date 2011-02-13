@@ -20,4 +20,4 @@ defined('PIPES_IS_WINDOWS') || define(
 );
 
 define('PIPES_DIR', dirname(__FILE__) . '/../');
-define('PIPES_PACKAGE_DIR', pipes_figure_out_package_dir() . '/');
+define('PIPES_PACKAGE_DIR', pipes_figure_out_package_dir());
