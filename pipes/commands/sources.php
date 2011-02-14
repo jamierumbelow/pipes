@@ -88,7 +88,7 @@ class Pipes_Command_Sources {
 			// Remove it and write the config
 			unset(Pipes::$config->sources[$key]);
 			Pipes::write_config();
-
+			
 			// Done
 			$this->cli->success('Successfully removed ' . $url . ' from the list of sources');
 		} else {

@@ -41,7 +41,7 @@ Using the pipes command you can search through and list the pipes:
 	sudo pipes search example_
 	sudo pipes list --remote # View all remote pipes 
 	sudo pipes list --local # View all installed pipes
-	De
+
 By default, Pipes will search through the default Pipes repository. You can setup other repositories by using the 'sources' command.
 
 	sudo pipes sources add http://example.com/pipes-repository
