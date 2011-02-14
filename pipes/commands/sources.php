@@ -81,7 +81,7 @@ class Pipes_Command_Sources {
 	 * @author Jamie Rumbelow
 	 */
 	public function remove_source($url) {
-		if (!in_array($url, Pipes::$config->sources)) {
+		if (in_array($url, Pipes::$config->sources)) {
 			$keys = array_flip(Pipes::$config->sources);
 			$key = $keys[$url];
 			
@@ -92,7 +92,7 @@ class Pipes_Command_Sources {
 			// Done
 			$this->cli->success('Successfully removed ' . $url . ' from the list of sources');
 		} else {
-			$this->cli->error("Couldn't find URL in list is of sources");
+			$this->cli->error("Couldn't find URL in list of sources");
 		}
 	}
 	
