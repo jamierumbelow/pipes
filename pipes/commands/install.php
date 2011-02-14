@@ -104,7 +104,19 @@ class Pipes_Command_Install {
 		$this->cli->write('Searching for pipe...');
 		
 		// Go look for it!
-		$tmp = Pipes_Downloader::download_from_url(Pipes_Downloader::$api . 'pipe?name=' . $name);
+		foreach (Pipes::$config->sources as $source) {
+			$tmp = Pipes_Downloader::download_from_url($source . 'pipe?name=' . $name);
+			
+			if ($tmp) {
+				break;
+			}
+		}
+		
+		// Make sure we've got something
+		if (!$tmp) {
+			$this->cli->error('Couldn\'t find pipe in any configured sources!');
+			exit;
+		}
 		
 		// Awesome. Check for -l flag
 		if (!isset($this->flags['l']) || !$this->flags['l']) {
