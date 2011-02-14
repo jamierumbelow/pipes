@@ -71,12 +71,13 @@ chmod($exec, 0755);
 
 // Load the .pipespec to get a list of files
 $pipespec = include('pipes.pipespec');
+$pipe_package_dir = PIPES_PACKAGE_DIR . 'pipes-' . $pipespec['version'] . '/';
 
 // Copy over the files manually
-@mkdir(PIPES_PACKAGE_DIR.'/pipes-'.$pipespec['version']);
+@mkdir($pipes_package_dir, 0755, true);
 
 foreach ($pipespec['files'] as $file) {
-	proper_copy($file, PIPES_PACKAGE_DIR . '/pipes-'.$pipespec['version'] . '/' . $file);
+	proper_copy($file, $pipes_package_dir . $file);
 }
 
 // Symlink
