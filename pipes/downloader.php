@@ -12,7 +12,6 @@
  **/
 
 class Pipes_Downloader {
-	static $api = 'http://pipesphp.org/api/';
 	
 	/**
 	 * Download a pipe from a URL
@@ -22,8 +21,6 @@ class Pipes_Downloader {
 	 * @author Jamie Rumbelow
 	 */
 	static public function download_from_url($url) {
-		Pipes_Cli::write('Downloading pipe...');
-		
 		// Open a temporary file
 		$name = tempnam('/tmp', 'pipes_');
 		$file = fopen($name, 'w+');
@@ -32,7 +29,11 @@ class Pipes_Downloader {
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_FILE, $file);
-		curl_exec($ch);
+		
+		// Make sure we return FALSE if something goes bad
+		if (!curl_exec($ch)) {
+			$name = FALSE;
+		}
 		
 		// Close the handles
 		curl_close($ch);
@@ -49,25 +50,35 @@ class Pipes_Downloader {
 	 * @author Jamie Rumbelow
 	 **/
 	static public function api_request($endpoint, $method = 'GET', $parameters = array()) {
-		// Set some stuff up
-		$url = self::$api . $endpoint;
-		$curl = curl_init();
-		
-		// Set curlopts
-		curl_setopt($curl, CURLOPT_URL, $url);
-		curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
-		
-		// POST? Params?
-		if (strtoupper($method) == 'POST') {
-			curl_setopt($curl, CURLOPT_POST, TRUE);
-			curl_setopt($curl, CURLOPT_POSTFIELDS, $parameters);
+		foreach (Pipes::$config->sources as $source) {
+			// Set some stuff up
+			$url = $source . $endpoint;
+			$curl = curl_init();
+			
+			// Set curlopts
+			curl_setopt($curl, CURLOPT_URL, $url);
+			curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
+			
+			// POST? Params?
+			if (strtoupper($method) == 'POST') {
+				curl_setopt($curl, CURLOPT_POST, TRUE);
+				curl_setopt($curl, CURLOPT_POSTFIELDS, $parameters);
+			}
+			
+			// Make the request!
+			$response = curl_exec($curl);
+			curl_close($curl);
+			
+			// Decode it
+			$response = json_decode($response);
+			
+			// Break if it's good, otherwise 
+			if ($response->success) {
+				break;
+			}
 		}
 		
-		// Make the request!
-		$response = curl_exec($curl);
-		curl_close($curl);
-		
-		// Decode and return the response
-		return json_decode($response);
+		// Return the response
+		return $response;
 	}
 }
