@@ -74,10 +74,10 @@ $pipespec = include('pipes.pipespec');
 $pipe_package_dir = PIPES_PACKAGE_DIR . 'pipes-' . $pipespec['version'] . '/';
 
 // Copy over the files manually
-@mkdir($pipes_package_dir, 0755, true);
+@mkdir($pipe_package_dir, 0755, true);
 
 foreach ($pipespec['files'] as $file) {
-	proper_copy($file, $pipes_package_dir . $file);
+	proper_copy($file, $pipe_package_dir . $file);
 }
 
 // Symlink
