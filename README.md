@@ -86,4 +86,11 @@ There are a number of things currently wrong or missing from Pipes that will nee
 * A local pipes installation tool, allowing each project to "host" its own pipes install and repository for servers that really don't like it.
 * The search command
 * Dependency management
-	
+
+Windows To-Do
+-------------
+
+* Find a suitable alternative for [symlink](http://php.net/manual/en/function.symlink.php "symlink(): PHP Manual"), as this is only available in versions of Windows Vista or greater.
+* Either find a way of permanently altering the include_path to include the current users home directory, or get them to add it manually. We cannot rely on the include_path as a default installation of PHP on Windows can sometimes only return the CWD as a valid include path.
+
+Currently, only the setup script works (bar symlinks) properly on Windows. Next step is the program (script/program?) compatibility itself.
