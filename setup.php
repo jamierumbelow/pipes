@@ -32,8 +32,6 @@ require_once 'pipes/version.php';
 
 // Get the contents of the binary file.
 $binary = file_get_contents('./bin/pipes');
-// What if PHP isn't installed in "C:/Program Files/PHP"? WELL SCREW IT, YOU
-// THINK OF A BETTER INSTALLATION PATH ON WINDOWS.
 $exec = '/usr/bin/pipes';
 // If we're on Windows, extra installation steps are required.
 if(PIPES_IS_WINDOWS) {
