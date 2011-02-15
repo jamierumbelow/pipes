@@ -79,7 +79,14 @@ foreach ($pipespec['files'] as $file) {
 }
 
 // Symlink
-@symlink(PIPES_PACKAGE_DIR . '/' . $pipespec['name'].'-'.$pipespec['version'] . '/', PIPES_PACKAGE_DIR . '/' . $pipespec['name']);
+if(!PIPES_IS_WINDOWS) {
+	@symlink(
+		PIPES_PACKAGE_DIR . '/' . $pipespec['name'] . '-' . $pipespec['version'] . '/',
+		PIPES_PACKAGE_DIR . '/' . $pipespec['name']
+	);
+}
 
 // We're done!
-echo("\033[0;32m" . "The 'pipes' command is now available. Thanks for installing Pipes!" . "\033[0m\n");
+echo PIPES_IS_WINDOWS
+	? "The 'pipes' command is now available. Thanks for installing Pipes!"
+	: "\033[0;32m" . "The 'pipes' command is now available. Thanks for installing Pipes!" . "\033[0m\n";
