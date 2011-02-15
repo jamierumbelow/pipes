@@ -30,28 +30,63 @@ require_once 'pipes/version.php';
 
 /**/
 
-
-// Get the contents of the binary
+// Get the contents of the binary file.
 $binary = file_get_contents('./bin/pipes');
-
-// Copy over the binary
-$f = fopen('/usr/bin/pipes', 'w');
+$exec = '/usr/bin/pipes';
+// If we're on Windows, extra installation steps are required.
+if(PIPES_IS_WINDOWS) {
+	// Firstly, remove the first line of the binary that specifies which binary to
+	// use on *nix systems.
+	$binary = substr($binary, strpos($binary, "\n") + 1);
+	// Next, determine the current users home directory. This will return the path
+	// to the logged in user, regardless of running as Administrator. This will be
+	// the pipes installation folder.
+	$installpath = path(trim(shell_exec('echo %USERPROFILE%'))) . 'pipes/';
+	$exec = $installpath . 'pipes.php';
+	// Now, create a Batch file to act as our executable wrapper, it is a
+	// workaround to map "pipes args" to "php pipes.php args". YOU NEED TO RUN
+	// THIS AS <del>ROOT</del><del>ADMIN</del><ins>RIGHT-CLICK COMMAND-PROMPT IN
+	// THE START MENU AND SELECT "RUN AS ADMINISTRATOR", THEN CLICK YES</ins>.
+	$b = fopen('C:/WINDOWS/pipes.bat', 'w');
+	fwrite($b, 'php "' . $exec . '" %*');
+	fclose($b);
+	chmod('C:/WINDOWS/pipes.bat', 0755);
+	// Create the Pipes installation directory before we try to create the binary
+	// there. Set the permissions to "hey, come screw with me, I won't fight
+	// back", otherwise we won't be able to write to it later, since we are in...
+	// What do you call root on Windows? :\
+	mkdir($installpath, 0777, true);
+}
+// Copy over the binary.
+$f = fopen($exec, 'w');
 fwrite($f, $binary);
 fclose($f);
-chmod('/usr/bin/pipes', 0755);
+chmod($exec, 0755);
+
+/**
+ * Executables installed, move on to copying core files over.
+ */
 
 // Load the .pipespec to get a list of files
 $pipespec = include('pipes.pipespec');
+$pipe_package_dir = PIPES_PACKAGE_DIR . 'pipes-' . $pipespec['version'] . '/';
 
 // Copy over the files manually
-@mkdir(PIPES_PACKAGE_DIR.'/pipes-'.$pipespec['version']);
+@mkdir($pipe_package_dir, 0755, true);
 
 foreach ($pipespec['files'] as $file) {
-	proper_copy($file, PIPES_PACKAGE_DIR . '/pipes-'.$pipespec['version'] . '/' . $file);
+	proper_copy($file, $pipe_package_dir . $file);
 }
 
 // Symlink
-@symlink(PIPES_PACKAGE_DIR . '/' . $pipespec['name'].'-'.$pipespec['version'] . '/', PIPES_PACKAGE_DIR . '/' . $pipespec['name']);
+if(!PIPES_IS_WINDOWS) {
+	@symlink(
+		PIPES_PACKAGE_DIR . '/' . $pipespec['name'] . '-' . $pipespec['version'] . '/',
+		PIPES_PACKAGE_DIR . '/' . $pipespec['name']
+	);
+}
 
 // We're done!
-echo("\033[0;32m" . "The 'pipes' command is now available. Thanks for installing Pipes!" . "\033[0m\n");
+echo PIPES_IS_WINDOWS
+	? "The 'pipes' command is now available. Thanks for installing Pipes!"
+	: "\033[0;32m" . "The 'pipes' command is now available. Thanks for installing Pipes!" . "\033[0m\n";

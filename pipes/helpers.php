@@ -43,11 +43,18 @@ if(!function_exists('path')) {
  * @author Jamie Rumbelow
  */
 function pipes_figure_out_package_dir() {
+	// If we're on Windows, the following will return a string, use the current
+	// user's home directory to store the pipes in, don't bother with the include
+	// path, most installations will only return the CWD or "C:\php5\pear", these
+	// are useless to us.
+	$winuser = path(trim(shell_exec('echo %USERPROFILE%')));
+	if(is_string($winuser)) {
+		return $winuser . 'pipes/';
+	}
 	$path = ini_get('include_path');
-	// Use PATH_SEPARATOR, so we don't have to worry about the host OS.
+	// Use PATH_SEPARATOR, so we don't have to worry about the host OS (even
+	// though Windows has already returned - keep for good practice).
 	$paths = explode(PATH_SEPARATOR, $path);
-	// Get rid of CWD.
-	array_shift($paths);
 	// Get the first *valid* load directory, returning a consistently formatted
 	// path.
 	foreach($paths as $path) {

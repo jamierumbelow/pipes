@@ -11,4 +11,4 @@
  * @license MIT License
  **/
 
-define('PIPES_VERSION', '1.0.0-dev');
+defined('PIPES_VERSION') || define('PIPES_VERSION', '1.0.0-dev');
