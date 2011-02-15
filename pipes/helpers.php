@@ -48,7 +48,7 @@ function pipes_figure_out_package_dir() {
 	$paths = explode(PATH_SEPARATOR, $path);
 	// Get rid of CWD and replace with the default Win Install path first, if
 	// we're on *nix, the path will be invalid and ignored.
-	$paths[0] = path(trim(shell_exec('echo %USERPROFILE%')) . '/pipes/');
+	$paths[0] = path(trim(shell_exec('echo %USERPROFILE%')) . 'pipes/');
 	// Get the first *valid* load directory, returning a consistently formatted
 	// path.
 	foreach($paths as $path) {
